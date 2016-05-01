@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="FrameWork">
+      <UniqueIdentifier>{6257b715-789a-4303-bda3-d00b341f5289}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Texture">
+      <UniqueIdentifier>{57627e0f-1215-4219-b575-9b6b743945a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\D3DBase">
+      <UniqueIdentifier>{ae3bd1bc-efb8-42ce-86a7-854dc2ae6f73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Functions">
+      <UniqueIdentifier>{4f88b844-4b6c-4a4e-8898-a9e0e84738e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FX%28Shader%29">
+      <UniqueIdentifier>{659ecf56-500b-46ef-89a7-d0e8f3be46a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\SystemHelpFunction">
+      <UniqueIdentifier>{d3d5c606-b2fb-4362-8244-b8bf011cdf2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source File">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Resource File">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header File">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source File</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry.cpp">
+      <Filter>Source File</Filter>
+    </ClCompile>
+    <ClCompile Include="SetParameter.cpp">
+      <Filter>Source File</Filter>
+    </ClCompile>
+    <ClCompile Include="Render.cpp">
+      <Filter>Source File</Filter>
+    </ClCompile>
+    <ClCompile Include="D3DMain.cpp">
+      <Filter>FrameWork\D3DBase</Filter>
+    </ClCompile>
+    <ClCompile Include="GameTimer.cpp">
+      <Filter>FrameWork\Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="GeometryGenerator.cpp">
+      <Filter>FrameWork\Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="MathHelper.cpp">
+      <Filter>FrameWork\Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="Waves.cpp">
+      <Filter>FrameWork\Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderHelper.cpp">
+      <Filter>FrameWork\SystemHelpFunction</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Geometry.h">
+      <Filter>Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="SetParameter.h">
+      <Filter>Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="Render.h">
+      <Filter>Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="D3DMain.h">
+      <Filter>FrameWork\D3DBase</Filter>
+    </ClInclude>
+    <ClInclude Include="D3Utility.h">
+      <Filter>FrameWork\D3DBase</Filter>
+    </ClInclude>
+    <ClInclude Include="GameTimer.h">
+      <Filter>FrameWork\Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="GeometryGenerator.h">
+      <Filter>FrameWork\Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="LightHelper.h">
+      <Filter>FrameWork\Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="MathHelper.h">
+      <Filter>FrameWork\Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="Waves.h">
+      <Filter>FrameWork\Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBuffer.h">
+      <Filter>FrameWork\SystemHelpFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="cbBufferSet.h">
+      <Filter>FrameWork\SystemHelpFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderHelper.h">
+      <Filter>FrameWork\SystemHelpFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.h">
+      <Filter>FrameWork\D3DBase</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="LightPixel.hlsl">
+      <Filter>FX%28Shader%29</Filter>
+    </FxCompile>
+    <FxCompile Include="LightVertex.hlsl">
+      <Filter>FX%28Shader%29</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Asset\Texture\grass.dds">
+      <Filter>Texture</Filter>
+    </Image>
+    <Image Include="..\Asset\Texture\water1.dds">
+      <Filter>Texture</Filter>
+    </Image>
+    <Image Include="..\Asset\Texture\water2.dds">
+      <Filter>Texture</Filter>
+    </Image>
+    <Image Include="..\Asset\Texture\WoodCrate01.dds">
+      <Filter>Texture</Filter>
+    </Image>
+    <Image Include="..\Asset\Texture\WoodCrate02.dds">
+      <Filter>Texture</Filter>
+    </Image>
+    <Image Include="..\Asset\Texture\brick01.dds">
+      <Filter>Texture</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

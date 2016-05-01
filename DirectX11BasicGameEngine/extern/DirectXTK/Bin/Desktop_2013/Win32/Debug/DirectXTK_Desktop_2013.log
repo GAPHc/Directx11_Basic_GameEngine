@@ -1,0 +1,64 @@
+﻿  pch.cpp
+  WICTextureLoader.cpp
+  VertexTypes.cpp
+c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\inc\vertextypes.h(273): warning C4458: 'color' 선언은 클래스 멤버를 숨깁니다.
+  c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\inc\vertextypes.h(233): note: 'DirectX::VertexPositionNormalTangentColorTexture::color' 선언을 참조하십시오.
+c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\inc\vertextypes.h(325): warning C4458: 'weights' 선언은 클래스 멤버를 숨깁니다.
+  c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\inc\vertextypes.h(289): note: 'DirectX::VertexPositionNormalTangentColorTextureSkinning::weights' 선언을 참조하십시오.
+c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\src\vertextypes.cpp(103): warning C4458: 'color' 선언은 클래스 멤버를 숨깁니다.
+  c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\inc\vertextypes.h(233): note: 'DirectX::VertexPositionNormalTangentColorTexture::color' 선언을 참조하십시오.
+c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\src\vertextypes.cpp(127): warning C4458: 'indices' 선언은 클래스 멤버를 숨깁니다.
+  c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\inc\vertextypes.h(288): note: 'DirectX::VertexPositionNormalTangentColorTextureSkinning::indices' 선언을 참조하십시오.
+c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\src\vertextypes.cpp(132): warning C4458: 'weights' 선언은 클래스 멤버를 숨깁니다.
+  c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\inc\vertextypes.h(289): note: 'DirectX::VertexPositionNormalTangentColorTextureSkinning::weights' 선언을 참조하십시오.
+  SpriteFont.cpp
+  PrimitiveBatch.cpp
+  SpriteBatch.cpp
+c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\inc\vertextypes.h(273): warning C4458: 'color' 선언은 클래스 멤버를 숨깁니다.
+  c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\inc\vertextypes.h(233): note: 'DirectX::VertexPositionNormalTangentColorTexture::color' 선언을 참조하십시오.
+c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\inc\vertextypes.h(325): warning C4458: 'weights' 선언은 클래스 멤버를 숨깁니다.
+  c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\inc\vertextypes.h(289): note: 'DirectX::VertexPositionNormalTangentColorTextureSkinning::weights' 선언을 참조하십시오.
+  SkinnedEffect.cpp
+  ScreenGrab.cpp
+c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\src\screengrab.cpp(927): warning C4838: 'UINT'에서 'INT'(으)로의 변환에는 축소 변환이 필요합니다.
+  ModelLoadSDKMESH.cpp
+c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\inc\vertextypes.h(273): warning C4458: 'color' 선언은 클래스 멤버를 숨깁니다.
+  c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\inc\vertextypes.h(233): note: 'DirectX::VertexPositionNormalTangentColorTexture::color' 선언을 참조하십시오.
+c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\inc\vertextypes.h(325): warning C4458: 'weights' 선언은 클래스 멤버를 숨깁니다.
+  c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\inc\vertextypes.h(289): note: 'DirectX::VertexPositionNormalTangentColorTextureSkinning::weights' 선언을 참조하십시오.
+  ModelLoadCMO.cpp
+c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\inc\vertextypes.h(273): warning C4458: 'color' 선언은 클래스 멤버를 숨깁니다.
+  c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\inc\vertextypes.h(233): note: 'DirectX::VertexPositionNormalTangentColorTexture::color' 선언을 참조하십시오.
+c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\inc\vertextypes.h(325): warning C4458: 'weights' 선언은 클래스 멤버를 숨깁니다.
+  c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\inc\vertextypes.h(289): note: 'DirectX::VertexPositionNormalTangentColorTextureSkinning::weights' 선언을 참조하십시오.
+  Model.cpp
+c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\src\model.cpp(45): warning C4458: 'effect' 선언은 클래스 멤버를 숨깁니다.
+  c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\inc\model.h(67): note: 'DirectX::ModelMeshPart::effect' 선언을 참조하십시오.
+c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\src\model.cpp(45): warning C4458: 'inputLayout' 선언은 클래스 멤버를 숨깁니다.
+  c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\inc\model.h(64): note: 'DirectX::ModelMeshPart::inputLayout' 선언을 참조하십시오.
+c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\src\model.cpp(74): warning C4458: 'effect' 선언은 클래스 멤버를 숨깁니다.
+  c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\inc\model.h(67): note: 'DirectX::ModelMeshPart::effect' 선언을 참조하십시오.
+c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\src\model.cpp(74): warning C4458: 'inputLayout' 선언은 클래스 멤버를 숨깁니다.
+  c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\inc\model.h(64): note: 'DirectX::ModelMeshPart::inputLayout' 선언을 참조하십시오.
+c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\src\model.cpp(97): warning C4458: 'effect' 선언은 클래스 멤버를 숨깁니다.
+  c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\inc\model.h(67): note: 'DirectX::ModelMeshPart::effect' 선언을 참조하십시오.
+  GeometricPrimitive.cpp
+c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\inc\vertextypes.h(273): warning C4458: 'color' 선언은 클래스 멤버를 숨깁니다.
+  c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\inc\vertextypes.h(233): note: 'DirectX::VertexPositionNormalTangentColorTexture::color' 선언을 참조하십시오.
+c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\inc\vertextypes.h(325): warning C4458: 'weights' 선언은 클래스 멤버를 숨깁니다.
+  c:\users\minseokhong\desktop\directx\project\directxtutorial\extern\directxtk\inc\vertextypes.h(289): note: 'DirectX::VertexPositionNormalTangentColorTextureSkinning::weights' 선언을 참조하십시오.
+  EnvironmentMapEffect.cpp
+  EffectFactory.cpp
+  EffectCommon.cpp
+  BinaryReader.cpp
+  DualTextureEffect.cpp
+  DGSLEffectFactory.cpp
+  DGSLEffect.cpp
+  DDSTextureLoader.cpp
+  CommonStates.cpp
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  BasicEffect.cpp
+  AlphaTestEffect.cpp
+  코드를 생성하고 있습니다...
+  DirectXTK_Desktop_2013.vcxproj -> C:\Users\MinseokHong\Desktop\DirectX\Project\DirectXTutorial\extern\DirectXTK\Bin\Desktop_2013\Win32\Debug\DirectXTK.lib
