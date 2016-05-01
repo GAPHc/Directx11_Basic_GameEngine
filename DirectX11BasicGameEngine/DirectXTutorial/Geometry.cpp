@@ -27,29 +27,29 @@ void Geometry::BuildGeometryObject(ID3D11Device* device, ID3D11Buffer** mVB, ID3
 		vertices[k].Tex0 = box.Vertices[i].TexC;
 	}
 
-	D3D11_BUFFER_DESC vbd;												//정점 버퍼 생성
-	vbd.Usage = D3D11_USAGE_IMMUTABLE;									//버퍼가 쓰이는 방식
-	vbd.ByteWidth = sizeof(Vertex) * box.Vertices.size();				//생성할 정점 버퍼의 크기
+	D3D11_BUFFER_DESC vbd;												//Create Vertex Buffer  정점 버퍼 생성
+	vbd.Usage = D3D11_USAGE_IMMUTABLE;									//Method of Buffer written   버퍼가 쓰이는 방식
+	vbd.ByteWidth = sizeof(Vertex) * box.Vertices.size();				//Size of vertext buffer that want to create  생성할 정점 버퍼의 크기
 	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vbd.CPUAccessFlags = 0;												//CPU가 버퍼에 접근하는 방식을 결정하는 플래그 지정
+	vbd.CPUAccessFlags = 0;												//Set flag that is decision of buffer approaching methods  CPU가 버퍼에 접근하는 방식을 결정하는 플래그 지정
 	vbd.MiscFlags = 0;
 	D3D11_SUBRESOURCE_DATA vinitData;
-	vinitData.pSysMem = &vertices[0];									//정점 버퍼를 초기화할 자료를 담은 포인터
+	vinitData.pSysMem = &vertices[0];									//It is pointer that including initialize vertex buffer  정점 버퍼를 초기화할 자료를 담은 포인터
 
 	HR(device->CreateBuffer(&vbd, &vinitData, mVB));
 
-	D3D11_BUFFER_DESC ibd; //색인 버퍼
+	D3D11_BUFFER_DESC ibd; //Index buffer  색인 버퍼
 	ibd.Usage = D3D11_USAGE_IMMUTABLE;
 	ibd.ByteWidth = sizeof(UINT) * mBoxIndexCount;
 	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	ibd.CPUAccessFlags = 0;
 	ibd.MiscFlags = 0;
 
-	//색인버퍼 초기화 자료 지정
+	//Set index buffer initialize data 색인버퍼 초기화 자료 지정
 	D3D11_SUBRESOURCE_DATA iinitData;
 	iinitData.pSysMem = &box.Indices[0];
 
-	//색인버퍼 생성
+	//Create index buffer 색인버퍼 생성
 	HR(device->CreateBuffer(&ibd, &iinitData, mIB));
 }
 
@@ -74,6 +74,7 @@ XMFLOAT3 Geometry::GetHillNormal(float x, float z)const
 
 void Geometry::BuildGeometryLand(ID3D11Device* device, ID3D11Buffer** mVB, ID3D11Buffer** mIB)
 {
+	//Hill
 	//언덕
 	GeometryGenerator::MeshData grid;
 
@@ -98,22 +99,22 @@ void Geometry::BuildGeometryLand(ID3D11Device* device, ID3D11Buffer** mVB, ID3D1
 		vertices[i].Tex0 = grid.Vertices[i].TexC;
 	}
 
-	D3D11_BUFFER_DESC vbd;						//정점 버퍼 생성
-	vbd.Usage = D3D11_USAGE_IMMUTABLE;			//버퍼가 쓰이는 방식 
-	vbd.ByteWidth = sizeof(Vertex) * grid.Vertices.size();			//생성할 정점 버퍼의 크기
+	D3D11_BUFFER_DESC vbd;						//Create vertex buffer  정점 버퍼 생성
+	vbd.Usage = D3D11_USAGE_IMMUTABLE;			//Mothod of buffer witten 버퍼가 쓰이는 방식 
+	vbd.ByteWidth = sizeof(Vertex) * grid.Vertices.size();			//Size of vertext buffer that want to create  생성할 정점 버퍼의 크기
 	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vbd.CPUAccessFlags = 0;						//CPU가 버퍼에 접근하는 방식을 결정하는 플래그 지정
+	vbd.CPUAccessFlags = 0;						//Set flag that is decision of buffer approaching methods  CPU가 버퍼에 접근하는 방식을 결정하는 플래그 지정
 	vbd.MiscFlags = 0;
-	//vbd.StructureByteStride = 0;				// 구조적 버퍼에 저장된 원소 하나의 크기
+	//vbd.StructureByteStride = 0;				//Size of struct buffer's saved one element's 구조적 버퍼에 저장된 원소 하나의 크기
 	D3D11_SUBRESOURCE_DATA vinitData;
-	vinitData.pSysMem = &vertices[0];				//정점 버퍼를 초기화할 자료를 담은 포인터
+	vinitData.pSysMem = &vertices[0];				//It is pointer that including initialize vertex buffer  정점 버퍼를 초기화할 자료를 담은 포인터
 
 	HR(device->CreateBuffer(
-		&vbd,			//생성할 버퍼를 서술하는 구조체
-		&vinitData,		//버퍼를 초기화하는데 사용할 자료
-		mVB));		//생성된 버퍼가 설정되는 곳
+		&vbd,			//It is structure that describe will create buffer  생성할 버퍼를 서술하는 구조체
+		&vinitData,		//It is data that use initalize of buffer  버퍼를 초기화하는데 사용할 자료
+		mVB));		//It is place that Created buffer set 생성된 버퍼가 설정되는 곳
 
-	D3D11_BUFFER_DESC ibd; //색인 버퍼
+	D3D11_BUFFER_DESC ibd; //Index buffer  색인 버퍼
 	ibd.Usage = D3D11_USAGE_IMMUTABLE;
 	ibd.ByteWidth = sizeof(UINT) * mGridIndexCount;
 	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
@@ -121,11 +122,11 @@ void Geometry::BuildGeometryLand(ID3D11Device* device, ID3D11Buffer** mVB, ID3D1
 	ibd.MiscFlags = 0;
 	//ibd.StructureByteStride = 0;
 
-	//색인버퍼 초기화 자료 지정
+	//Set index buffer initalize data  색인버퍼 초기화 자료 지정
 	D3D11_SUBRESOURCE_DATA iinitData;
 	iinitData.pSysMem = &grid.Indices[0];
 
-	//색인버퍼 생성
+	//Create index buffer  색인버퍼 생성
 	HR(device->CreateBuffer(&ibd, &iinitData, mIB));
 }
 
@@ -141,7 +142,7 @@ void Geometry::BuildGeometryWave(ID3D11Device* device, ID3D11Buffer** mVB, ID3D1
 		vertices[i].Tex0.y = 0.5f - mWaves[i].z / mWaves.Depth();
 	}
 
-	//파도
+	//Wave  파도
 	D3D11_BUFFER_DESC vbd;
 	vbd.Usage = D3D11_USAGE_DYNAMIC;
 	vbd.ByteWidth = sizeof(Vertex) * mWaves.VertexCount();

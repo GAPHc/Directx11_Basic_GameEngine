@@ -4,11 +4,12 @@ void Render::DrawGeometryObject(ID3D11Device* device, ID3D11DeviceContext* conte
 	ComPtr<ID3D11ShaderResourceView> Texture, bool Wfrs, bool Ncrs, bool Atcbs, bool Tbs)
 {
 	float blendFactor[] = { 0.0f, 0.0f, 0.0f, 0.0f };
-
+	//Create vertex buffer
 	//정점버퍼 생성
 	UINT stride = sizeof(Vertex);
 	UINT offset = 0;
 
+	//Setting matrix vertex
 	//행렬 변수 설정
 	XMMATRIX world = XMLoadFloat4x4(&mObWorld);
 	XMMATRIX worldInvTranspose = MathHelper::InverseTranspose(world);
@@ -19,6 +20,7 @@ void Render::DrawGeometryObject(ID3D11Device* device, ID3D11DeviceContext* conte
 
 	XMMATRIX worldViewProj = XMMatrixTranspose(world*view*proj);
 
+	//------ Bound matrix that is will included in constant Buffer ------
 	//----------- Constant Buffer에 포함될 변수의 행렬 묶기 -------------
 	cbPerObject mPerObjectCB;
 
@@ -31,6 +33,7 @@ void Render::DrawGeometryObject(ID3D11Device* device, ID3D11DeviceContext* conte
 	mObjectConstantBuffer.ApplyChanges(context);
 	//---------------------------------------------------------------------------
 
+	//Bound vertex, index buffer to pipeline
 	//파이프라인에 정점버퍼, 색인버퍼 묶기
 	context->IASetVertexBuffers(0, 1, &mVB, &stride, &offset);
 	context->IASetIndexBuffer(mIB, DXGI_FORMAT_R32_UINT, 0);
@@ -46,12 +49,15 @@ void Render::DrawGeometryObject(ID3D11Device* device, ID3D11DeviceContext* conte
 	if (Atcbs)
 		context->OMSetBlendState(AlphaToCoverageBS, blendFactor, 0xffffffff);
 	if (Tbs)
+		//						(MixStateObject, RGBA color vector, Multisampling sample) 
 		//						(혼합상태객체, RGBA색상 백터, 다중표본화 표본)
 		context->OMSetBlendState(TransparentBS, blendFactor, 0xffffffff);
 	
 	context->PSSetShaderResources(0, 1, Texture.GetAddressOf());
 
+	//Draw basic figure using index buffer
 	//색인 버퍼를 이용해 기본도형 그리기
+	//In calling draw function, this is value that is added index count, init index location, and other index values
 	//그리기 호출에서 사용할 색인들의 개수, 첫 색인의 위치, 색인들에 더해지는 정수값
 	context->DrawIndexed(IndexCount, 0, 0);
 	
@@ -63,10 +69,12 @@ void Render::DrawGeometryObject(ID3D11Device* device, ID3D11DeviceContext* conte
 
 void Render::DrawWall(ID3D11Device* device, ID3D11DeviceContext* context, XMFLOAT4X4 mObWorld, XMFLOAT4X4 mVie, XMFLOAT4X4 mPro, Material mMat, ID3D11Buffer* mVB, ComPtr<ID3D11ShaderResourceView> Texture)
 {
+	//Cretae vertex buffer
 	//정점버퍼 생성
 	UINT stride = sizeof(Vertex);
 	UINT offset = 0;
 
+	// Setting Constant Value
 	//상수 설정
 	XMMATRIX world = XMLoadFloat4x4(&mObWorld);
 	XMMATRIX worldInvTranspose = MathHelper::InverseTranspose(world);
@@ -79,6 +87,7 @@ void Render::DrawWall(ID3D11Device* device, ID3D11DeviceContext* context, XMFLOA
 
 	cbPerObject mPerObjectCB;
 
+	//--------------- Create Object ------------------
 	//--------------------물체 생성--------------------
 	XMStoreFloat4x4(&mPerObjectCB.gWorld, XMMatrixTranspose(world));
 	XMStoreFloat4x4(&mPerObjectCB.gWorldInvTranspose, worldInvTranspose);
@@ -88,6 +97,7 @@ void Render::DrawWall(ID3D11Device* device, ID3D11DeviceContext* context, XMFLOA
 	mObjectConstantBuffer.Data = mPerObjectCB;
 	mObjectConstantBuffer.ApplyChanges(context);
 
+	//Bound vertex buffer to pipeline
 	//파이프라인에 정점버퍼 묶기
 	context->IASetVertexBuffers(0, 1, &mVB, &stride, &offset);
 
@@ -98,7 +108,9 @@ void Render::DrawWall(ID3D11Device* device, ID3D11DeviceContext* context, XMFLOA
 
 	context->PSSetShaderResources(0, 1, Texture.GetAddressOf());
 
+	//Draw basic figure using index buffer
 	//색인 버퍼를 이용해 기본도형 그리기
+	//In calling draw function, this is value that is added index count, init index location, and other index values
 	//그리기 호출에서 사용할 색인들의 개수, 첫 색인의 위치, 색인들에 더해지는 정수값
 	context->Draw(18, 6);
 }
@@ -107,10 +119,13 @@ void Render::DrawWallStencil(ID3D11Device* device, ID3D11DeviceContext* context,
 {
 	float blendFactor[] = { 0.0f, 0.0f, 0.0f, 0.0f };
 
+	//Create vertex buffer
 	//정점버퍼 생성
 	UINT stride = sizeof(Vertex);
 	UINT offset = 0;
 
+
+	//Setting constant
 	//상수 설정
 	XMMATRIX world = XMLoadFloat4x4(&mObWorld);
 	XMMATRIX worldInvTranspose = MathHelper::InverseTranspose(world);
@@ -145,7 +160,8 @@ void Render::FrameBufferSet(ID3D11DeviceContext* context, DirectionalLight DL, P
 
 void Render::Initialize(ID3D11Device* device, ID3D11DeviceContext* context)
 {
-	//---------------텍스쳐 세팅-------------------------
+	//----------- Setting Texture --------------------
+	//---------------텍스쳐 세팅----------------------
 	m_EffectFactory = std::unique_ptr<EffectFactory>(new EffectFactory(device));
 	m_EffectFactory->SetDirectory(L"..\\Asset\\");
 
@@ -158,6 +174,7 @@ void Render::Initialize(ID3D11Device* device, ID3D11DeviceContext* context)
 	m_EffectFactory->CreateTexture(L"Texture\\brick01.dds", context, &Wall);
 	//----------------------------------------------------
 
+	//------------------- Mixing -----------------------
 	//----------------------혼합-------------------------
 	D3D11_RASTERIZER_DESC wireframeDesc;
 	ZeroMemory(&wireframeDesc, sizeof(D3D11_RASTERIZER_DESC));
@@ -178,9 +195,9 @@ void Render::Initialize(ID3D11Device* device, ID3D11DeviceContext* context)
 	HR(device->CreateRasterizerState(&noCullDesc, &NoCullRS));
 
 	D3D11_BLEND_DESC alphaCoverageDesc = { 0 };
-	alphaCoverageDesc.AlphaToCoverageEnable = true;					//알파 포괄도 변환 활성화 여부 설정
-	alphaCoverageDesc.IndependentBlendEnable = false;				//렌더 대상마다 혼합을 개별정을 수정하는 것에 대한 여부 설정
-	alphaCoverageDesc.RenderTarget[0].BlendEnable = false;			//i번째 원소는 다중 렌더 대상의 i번째 렌더 대상에 적용할 혼합 설정을 담은 구조체
+	alphaCoverageDesc.AlphaToCoverageEnable = true;					//Setting acception or rejection that is alpha inclusion convert of vitalization   알파 포괄도 변환 활성화 여부 설정
+	alphaCoverageDesc.IndependentBlendEnable = false;				//Setting acception or rejection that is each rendering target's conversion fixing   렌더 대상마다 혼합을 개별정을 수정하는 것에 대한 여부 설정
+	alphaCoverageDesc.RenderTarget[0].BlendEnable = false;			//ist elements is included mix setting structures that submit to ist render target  i번째 원소는 다중 렌더 대상의 i번째 렌더 대상에 적용할 혼합 설정을 담은 구조체
 	alphaCoverageDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 	HR(device->CreateBlendState(&alphaCoverageDesc, &AlphaToCoverageBS));
 
@@ -188,18 +205,19 @@ void Render::Initialize(ID3D11Device* device, ID3D11DeviceContext* context)
 	transparentDesc.AlphaToCoverageEnable = false;
 	transparentDesc.IndependentBlendEnable = false;
 
-	transparentDesc.RenderTarget[0].BlendEnable = true;										//혼합 활성화, 비활성화 여부 설정
-	transparentDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;						//RGB성분 혼합의 원본 혼합 계수를 뜻함
-	transparentDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;					//RGB성분 혼합의 대상 혼합 계수를 뜻함
-	transparentDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;							//RGB성분 혼합의 대상 혼합 계수를 뜻함
-	transparentDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;						//알파 성분 혼합의 원본 혼합 계수를 뜻함
-	transparentDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;						//알파 성분 혼합의 대상 혼합 계수를 뜻함
-	transparentDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;						//알파 성분 혼합의 혼합 연산자를 뜻함
-	transparentDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;	//렌더 대상 쓰기 마스크
+	transparentDesc.RenderTarget[0].BlendEnable = true;										//Setting mix vitalization or not vitalization  혼합 활성화, 비활성화 여부 설정
+	transparentDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;						//RGB element's original mix calculation  RGB성분 혼합의 원본 혼합 계수를 뜻함
+	transparentDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;					//RGB element's original mix calculation  RGB성분 혼합의 대상 혼합 계수를 뜻함
+	transparentDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;							//RGB element's original mix calculation  RGB성분 혼합의 대상 혼합 계수를 뜻함
+	transparentDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;						//Alpha element's original mix calculation 알파 성분 혼합의 원본 혼합 계수를 뜻함
+	transparentDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;						//Alpha element's original mix calculation  알파 성분 혼합의 대상 혼합 계수를 뜻함
+	transparentDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;						//Alpha element's original mix operator  알파 성분 혼합의 혼합 연산자를 뜻함
+	transparentDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;	//Mask of render target's write 렌더 대상 쓰기 마스크
 	HR(device->CreateBlendState(&transparentDesc, &TransparentBS));
 	//-----------------------------------------------------
 
-	//----------------샘플러 설정-----------------------
+	//------------ Setting Sampler ---------------
+	//----------------샘플러 설정------------------
 	D3D11_SAMPLER_DESC samplerDesc;
 	ZeroMemory(&samplerDesc, sizeof(D3D11_SAMPLER_DESC));
 
@@ -218,6 +236,7 @@ void Render::Initialize(ID3D11Device* device, ID3D11DeviceContext* context)
 	samplerDesc.MaxLOD = FLT_MAX;
 
 	HR(device->CreateSamplerState(&samplerDesc, &m_D3_SamplerState));
+	//Insert Sampler
 	//샘플러 삽입
 	context->PSSetSamplers(0, 1, m_D3_SamplerState.GetAddressOf());
 	//--------------------------------------------------

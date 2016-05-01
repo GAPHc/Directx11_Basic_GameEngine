@@ -25,7 +25,6 @@ using namespace std;
 using namespace DirectX;
 using namespace DirectX::PackedVector;
 
-// 결과값을 검사해주는 매크로
 #ifndef D3DX11INLINE
 #ifdef _MSC_VER
 #if (_MSC_VER >= 1200)

@@ -41,24 +41,31 @@ private:
 	void LoadRasterState();
 
 private:
+	//------------ Render Variable --------------
 	//-------------- Render 변수 -----------------
 	Render *Rnd = new Render;
 	//----------------------------------------------
 
+	//------------Geometry Variable -----------
 	//--------------Geometry 변수---------------
 	Geometry *Geo = new Geometry;
 	//----------------------------------------------
+
+	//Vertex Buffer
 	//정점 버퍼
 	ID3D11Buffer* mBoxVB;
 	ID3D11Buffer* mHillVB;
 	ID3D11Buffer* mWavesVB;
 	ID3D11Buffer* mRoomVB;
+
+	//Index Buffer
 	//색인 버퍼
 	ID3D11Buffer* mBoxIB;
 	ID3D11Buffer* mHillIB;
 	ID3D11Buffer* mWavesIB;
 	//------------------------------------------
 
+	//---------- Variable With Light ----------
 	//------------ 빛 관련 변수 ----------------
 	DirectionalLight mDirLight;
 	PointLight mPointLight;
@@ -70,6 +77,7 @@ private:
 	XMFLOAT3 mEyePosW;
 	//------------------------------------------
 
+	//---------- Variable with Shader ---------
 	//------------ 쉐이더 관련 변수 ------------
 	ID3DBlob* mPSBlob;
 	ID3DBlob* mVSBlob;
@@ -86,6 +94,7 @@ private:
 	ID3D11VertexShader* mTreeVertexShader;
 	//------------------------------------------
 
+	//--------- Variable with Matrix ----------
 	//----------- 행렬 관련 변수 ---------------
 	XMFLOAT4X4 mBoxWorld;
 	XMFLOAT4X4 mGridWorld;
@@ -95,6 +104,7 @@ private:
 	XMFLOAT4X4 mProj;
 	//-------------------------------------------
 	
+	//----------- Variable with Texture ------------
 	//-------------- 텍스쳐 관련 변수 --------------
 	unique_ptr<DirectX::EffectFactory> m_EffectFactory;
 	ComPtr<ID3D11ShaderResourceView> grass;
@@ -106,6 +116,7 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11SamplerState> m_D3_SamplerState;
 	//-----------------------------------------------
 
+	//-------------- Other Variable -------------
 	//----------------- 기타 변수 -----------------
 	SetParameter *SetPtr = new SetParameter;
 
@@ -123,6 +134,7 @@ private:
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 	PSTR cmdLine, int showCmd)
 {
+	// Vitalization of executive time memory check when debug mode. 
 	// 디버그 모드일 때 실행시점 메모리 점검 기능 활성화.
 #if defined(DEBUG) | defined(_DEBUG)
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -173,6 +185,7 @@ InitDirect3DApp::InitDirect3DApp(HINSTANCE hInstance)
 
 InitDirect3DApp::~InitDirect3DApp()
 {
+	//-- Release vertex and index buffer variable setting --
 	//--------- 버텍스,인덱스 버퍼 변수 설정 해제 ----------
 	ReleaseCOM(mHillVB);
 	ReleaseCOM(mHillIB);
@@ -182,16 +195,19 @@ InitDirect3DApp::~InitDirect3DApp()
 	ReleaseCOM(mWavesIB);
 	//-----------------------------------------------------------
 
+	//----------- Release shader variable setting ---------
 	//-------------- 쉐이더 변수 설정 해제 ------------------
 	ReleaseCOM(mPixelShader);
 	ReleaseCOM(mVertexShader);
 	//-----------------------------------------------------------
 
+	//--------- Release HLSL shader loaded -----------
 	//-------------- HLSL 쉐이더 적재 해제 ---------------
 	ReleaseCOM(mPSBlob);
 	ReleaseCOM(mVSBlob);
 	//--------------------------------------------------------
 
+	//---------- Release other variable setting ----------
 	//-------------- 기타 변수 설정 해제 ------------------
 	ReleaseCOM(mInputLayout);
 	ReleaseCOM(mRasterState);
@@ -222,14 +238,16 @@ bool InitDirect3DApp::Init()
 
 void InitDirect3DApp::LoadRasterState()
 {
+	//Create rasterizer
 	//래스터화기 생성
 	D3D11_RASTERIZER_DESC rs;
 
+	//Load Rasterizer to memory
 	//메모리에 래스터화기 적재
 	memset(&rs, 0, sizeof(rs));
 
-	rs.FillMode = D3D11_FILL_SOLID;									//프레임 렌더링 모드
-	rs.CullMode = D3D11_CULL_BACK;									//삼각형 선별 여부 판별
+	rs.FillMode = D3D11_FILL_SOLID;									//Frame rendering mode    프레임 렌더링 모드
+	rs.CullMode = D3D11_CULL_BACK;									//Check triangle selection    삼각형 선별 여부 판별
 	rs.AntialiasedLineEnable = rs.DepthClipEnable = true;			
 	mRasterState = NULL;
 	HR(m_D3_Device->CreateRasterizerState(&rs, &mRasterState));
@@ -239,6 +257,7 @@ void InitDirect3DApp::OnResize()
 {
 	D3DMain::OnResize();
 
+	//Recalculate perspective matrix and renew the aspect radio when window size is changed
 	//창의 크기가 변하면 종횡비를 갱신하고 투영행렬을 다시 계산한다.
 	XMMATRIX P = XMMatrixPerspectiveFovLH(0.25f*MathHelper::Pi, GetAspectRatio(), 1.0f, 1000.0f);
 	XMStoreFloat4x4(&mProj, P);
@@ -246,6 +265,7 @@ void InitDirect3DApp::OnResize()
 
 void InitDirect3DApp::UpdateScene(float dt)
 {
+	//Change spherical surface coordinate to Decartesian-coordinate system.
 	//구면 좌표를 데카르트 좌표계로 변환
 	float x = mRadius* sinf(mPhi)*cosf(mTheta);
 	float z = mRadius* sinf(mPhi)*sinf(mTheta);
@@ -253,6 +273,7 @@ void InitDirect3DApp::UpdateScene(float dt)
 
 	mEyePosW = XMFLOAT3(x, y, z);
 
+	//Build view matrix
 	//뷰 행렬 빌드
 	XMVECTOR pos = XMVectorSet(x, y,z, 1.0f);
 	XMVECTOR target = XMVectorZero();
@@ -263,7 +284,10 @@ void InitDirect3DApp::UpdateScene(float dt)
 
 	Geo->UpdateGeometryWave(GetDeviceContext(),m_GameTimer.TotalTime(),&mWavesVB,&mWavesIB,dt);
 
+	//Act like light
 	//빛처럼 동작함
+	
+	//Move surface like drawing circle
 	//지표면을 원을 그리며 움직임.
 	mPointLight.Position.x = 70.0f*cosf(0.2f*m_GameTimer.TotalTime());
 	mPointLight.Position.z = 70.0f*sinf(0.2f*m_GameTimer.TotalTime());
@@ -273,7 +297,10 @@ void InitDirect3DApp::UpdateScene(float dt)
 			mPointLight.Position.x*cosf(0.1f*mPointLight.Position.z)),
 		-3.0f) + 10.0f;
 
+	//Look at the direction that is camera lookat
 	//카메라가 바라보는 방향과 동일한 곳을 쳐다봄.
+
+	//When using this method, able to make a effect such as holding flash light
 	//이러한 방법으로 플래시 라이트를 쥐고 있는듯한 효과를 만들 수 있음.
 	mSpotLight.Position = mEyePosW;
 	XMStoreFloat3(&mSpotLight.Direction, XMVector3Normalize(target - pos));
@@ -281,6 +308,7 @@ void InitDirect3DApp::UpdateScene(float dt)
 
 void InitDirect3DApp::DrawScene()
 {
+	//Bound to device that is what you want to use for input layout
 	//입력 배치를 사용하기 위해 사용하고자 하는 장치에 묶음
 	m_D3_DeviceContext->IASetInputLayout(mInputLayout);
 	m_D3_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -302,6 +330,7 @@ void InitDirect3DApp::DrawScene()
 	Rnd->DrawGeometryObject(GetDevice(), GetDeviceContext(), mWaveWorld, mView, mProj, &mEyePosW, mWavesMat, mWavesVB, mWavesIB, 3*Geo->GetWaveTriangleCount(), Rnd->Water2,false,false,false,true);
 	Rnd->DrawWall(GetDevice(), GetDeviceContext(), mRoomWorld, mView, mProj, mWallMat, mRoomVB, Rnd->Wall);
 
+	//Bound Rasterizer to pipeline
 	//래스터화기를 파이프라인에 묶기
 	m_D3_DeviceContext->RSSetState(mRasterState);
 
@@ -325,26 +354,32 @@ void InitDirect3DApp::OnMouseMove(WPARAM btnState, int x, int y)
 {
 	if ((btnState & MK_LBUTTON) != 0)
 	{
+		// Make each pixel to fit each degree's quater of one
 		// 각 도의 1/4에 맞게 각 픽셀을 만듬
 		float dx = XMConvertToRadians(0.25f*static_cast<float>(x - mLastMousePos.x));
 		float dy = XMConvertToRadians(0.25f*static_cast<float>(y - mLastMousePos.y));
 
+		// Update camera angle base on input value
 		// 상자 주의를 도는 카메라의 앵글을 인풋 값에 기초해 업데이트함
 		mTheta += dx;
 		mPhi += dy;
 
+		//Limit mphi's angle
 		//mphi의 앵글을 제한함
 		mPhi = MathHelper::Clamp(mPhi, 0.1f, MathHelper::Pi - 0.1f);
 	}
 	else if ((btnState & MK_RBUTTON) != 0)
 	{
+		//Make each pi
 		//각 픽셀이 화면에서 0.005유닛과 일치하도록 만듬
 		float dx = 0.005f*static_cast<float>(x - mLastMousePos.x)*10;
 		float dy = 0.005f*static_cast<float>(y - mLastMousePos.y)*10;
 
+		//Update radius camera base on input value
 		//인풋에 기초해 카메라 반지름을 업데이트함
 		mRadius += dx - dy;
 
+		//Limit radius
 		//반지름을 제한함
 		mRadius = MathHelper::Clamp(mRadius, 10.0f, 100.0f);
 	}
@@ -370,6 +405,7 @@ void InitDirect3DApp::BuildFX()
 	shaderFlags |= D3D10_SHADER_SKIP_OPTIMIZATION;
 	#endif
 
+	//Make shader and load ".cso" file
 	//cso파일을 불러오고 쉐이더를 만든다
 	HR(ShaderHelper::LoadCompiledShader("LightPixel.cso", &mPSBlob));
 	HR(m_D3_Device->CreatePixelShader(mPSBlob->GetBufferPointer(), mPSBlob->GetBufferSize(), NULL, &mPixelShader));
@@ -380,16 +416,20 @@ void InitDirect3DApp::BuildFX()
 
 void InitDirect3DApp::BuildVertexLayout()
 {
+	//Create vertex input layout
 	//버텍스 인풋 레이아웃 제작
 	D3D11_INPUT_ELEMENT_DESC vertexDesc[] =
 	{
+		//Inform usage information that is vertex structure's each elements
 		//정점 구조체의 각 성분을 어떤 용도인지 알려줌
+		// Sementic name, Sementic index, Data form, Buffer slot index, Offset, Slot class, Data interval
 		//시맨틱 이름 , 시맨틱 색인 , 자료 형식, 버퍼 슬롯 색인 , 오프셋 , 슬롯 클래스, 데이터 간격
 		{ "POSITION",0, DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA, 0},
 		{ "NORMAL",0, DXGI_FORMAT_R32G32B32_FLOAT,0,D3D11_APPEND_ALIGNED_ELEMENT,D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "TEXCOORD",0, DXGI_FORMAT_R32G32_FLOAT,0,D3D11_APPEND_ALIGNED_ELEMENT,D3D11_INPUT_PER_VERTEX_DATA, 0 }
 	};
 
+	//Make input layout
 	//인풋 레이아웃 제작
 	HR(m_D3_Device->CreateInputLayout(vertexDesc, 3, mVSBlob->GetBufferPointer(), mVSBlob->GetBufferSize(), &mInputLayout));
 }
